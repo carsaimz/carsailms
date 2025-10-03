@@ -295,5 +295,5 @@ Para questões relacionadas ao Firebase:
 - [Firebase Support](https://firebase.google.com/support)
 
 Para suporte específico da Carsai LMS:
-- Email: suporte@carsai.co.mz
+- Email: suporte.carsaimz@gmail.com
 - WhatsApp: +258 862 414 345

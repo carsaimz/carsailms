@@ -111,7 +111,7 @@ export default function Privacy() {
                 <li><strong>Retirada de Consentimento:</strong> Retirar o consentimento a qualquer momento</li>
               </ul>
               <p className="mt-4">
-                Para exercer esses direitos, entre em contacto conosco através de suporte@carsai.co.mz
+                Para exercer esses direitos, entre em contacto conosco através de suporte.carsaimz@gmail.com
               </p>
             </section>
 
@@ -161,7 +161,7 @@ export default function Privacy() {
                 Para questões sobre esta Política de Privacidade ou sobre como tratamos seus dados pessoais:
               </p>
               <ul className="list-none space-y-1">
-                <li><strong>Email:</strong> suporte@carsai.co.mz</li>
+                <li><strong>Email:</strong> suporte.carsaimz@gmail.com</li>
                 <li><strong>Telefone:</strong> +258 844 414 345</li>
                 <li><strong>WhatsApp:</strong> +258 862 414 345</li>
                 <li><strong>Endereço:</strong> Maputo, Moçambique</li>

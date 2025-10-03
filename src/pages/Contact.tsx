@@ -6,8 +6,61 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, MapPin, MessageSquare } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Nome é obrigatório").max(100, "Nome muito longo"),
+  email: z.string().trim().email("Email inválido").max(255, "Email muito longo"),
+  phone: z.string().trim().min(1, "Telefone é obrigatório").max(20, "Telefone muito longo"),
+  message: z.string().trim().min(10, "Mensagem muito curta").max(1000, "Mensagem muito longa"),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function Contact() {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  });
+
+  const onSubmit = async (data: ContactFormData) => {
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke("send-contact-email", {
+        body: data,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Mensagem enviada!",
+        description: "Entraremos em contato em breve.",
+      });
+      reset();
+    } catch (error) {
+      console.error("Erro ao enviar mensagem:", error);
+      toast({
+        title: "Erro ao enviar",
+        description: "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -27,18 +80,41 @@ export default function Contact() {
             {/* Contact Form */}
             <Card className="shadow-lg">
               <CardContent className="p-6">
-                <form className="space-y-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">Nome Completo</Label>
-                    <Input id="name" placeholder="Seu nome" />
+                    <Input 
+                      id="name" 
+                      placeholder="Seu nome" 
+                      {...register("name")}
+                    />
+                    {errors.name && (
+                      <p className="text-sm text-destructive">{errors.name.message}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" placeholder="seu@email.com" />
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      placeholder="seu@email.com" 
+                      {...register("email")}
+                    />
+                    {errors.email && (
+                      <p className="text-sm text-destructive">{errors.email.message}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Telefone</Label>
-                    <Input id="phone" type="tel" placeholder="+258..." />
+                    <Input 
+                      id="phone" 
+                      type="tel" 
+                      placeholder="+258..." 
+                      {...register("phone")}
+                    />
+                    {errors.phone && (
+                      <p className="text-sm text-destructive">{errors.phone.message}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="message">Mensagem</Label>
@@ -46,10 +122,19 @@ export default function Contact() {
                       id="message" 
                       placeholder="Como podemos ajudar?"
                       rows={6}
+                      {...register("message")}
                     />
+                    {errors.message && (
+                      <p className="text-sm text-destructive">{errors.message.message}</p>
+                    )}
                   </div>
-                  <Button variant="gradient" className="w-full">
-                    Enviar Mensagem
+                  <Button 
+                    type="submit" 
+                    variant="gradient" 
+                    className="w-full"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Enviando..." : "Enviar Mensagem"}
                   </Button>
                 </form>
               </CardContent>
@@ -66,8 +151,8 @@ export default function Contact() {
                     <div>
                       <h3 className="font-semibold mb-2">Email</h3>
                       <p className="text-muted-foreground">
-                        <a href="mailto:suporte@carsai.co.mz" className="hover:text-primary transition-colors">
-                          suporte@carsai.co.mz
+                        <a href="mailto:suporte.carsaimz@gmail.com" className="hover:text-primary transition-colors">
+                          suporte.carsaimz@gmail.com
                         </a>
                       </p>
                       <p className="text-muted-foreground">

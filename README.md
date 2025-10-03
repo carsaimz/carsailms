@@ -84,7 +84,7 @@ npm run dev
 
 ## 📞 Suporte
 
-- Email: suporte@carsai.co.mz
+- Email: suporte.carsaimz@gmail.com
 - WhatsApp: +258 862 414 345
 - Telefone: +258 844 414 345
 

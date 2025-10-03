@@ -73,6 +73,23 @@
 - ✅ Publicação direta no Firestore
 - ✅ Integrado com autenticação (autor automático)
 
+## ✅ Sistema de Contato com Email
+
+### Formulário de Contato
+- ✅ Validação de formulário com Zod
+- ✅ Campos: Nome, Email, Telefone, Mensagem
+- ✅ Envio automático de emails via Resend API
+- ✅ Email para admin (suporte.carsaimz@gmail.com)
+- ✅ Email de confirmação automática para usuário
+- ✅ Feedback visual com toast notifications
+- ✅ Estado de carregamento durante envio
+
+### Backend (Lovable Cloud)
+- ✅ Edge function `send-contact-email` configurada
+- ✅ Integração com Resend API
+- ✅ CORS habilitado
+- ✅ Tratamento de erros
+
 ## 📊 Dashboards
 
 ### Student Dashboard
@@ -145,8 +162,13 @@ Para notificações push no browser:
 - [ ] Sistema de avaliações e reviews
 - [ ] Analytics e relatórios
 - [ ] Mensagens privadas entre usuários
-- [ ] Notificações por email
 - [ ] Sistema de quiz e exames
+
+## 📧 Email e Comunicação
+- ✅ Sistema de envio de emails configurado (Resend)
+- ✅ Email de contato para admin
+- ✅ Email de confirmação automática
+- ✅ Template HTML responsivo
 
 ## 🎨 Design System
 - ✅ Componentes shadcn/ui integrados
@@ -158,6 +180,14 @@ Para notificações push no browser:
 - ✅ Regras de segurança Firestore (precisa ser aplicada)
 - ✅ Autenticação obrigatória para funcionalidades protegidas
 - ✅ Validação de permissões por role (admin/instructor/student)
+- ✅ Validação de inputs com Zod no frontend
+- ✅ Sanitização de dados antes de envio
+
+## 📞 Informações de Contato Atualizadas
+- ✅ Email principal: suporte.carsaimz@gmail.com
+- ✅ WhatsApp: +258 862 414 345
+- ✅ Telefone: +258 844 414 345
+- ✅ Todos os arquivos .md e componentes atualizados
 
 ---
 

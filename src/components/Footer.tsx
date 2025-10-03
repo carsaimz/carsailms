@@ -71,8 +71,8 @@ export const Footer = () => {
             <ul className="space-y-2">
               <li className="flex items-center gap-2 text-muted-foreground text-sm">
                 <Mail className="w-4 h-4" />
-                <a href="mailto:suporte@carsai.co.mz" className="hover:text-primary transition-colors">
-                  suporte@carsai.co.mz
+                <a href="mailto:suporte.carsaimz@gmail.com" className="hover:text-primary transition-colors">
+                  suporte.carsaimz@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2 text-muted-foreground text-sm">

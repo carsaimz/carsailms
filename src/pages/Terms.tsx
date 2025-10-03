@@ -112,7 +112,7 @@ export default function Terms() {
                 Para questões sobre estes Termos de Uso, entre em contacto:
               </p>
               <ul className="list-none space-y-1">
-                <li>Email: suporte@carsai.co.mz</li>
+                <li>Email: suporte.carsaimz@gmail.com</li>
                 <li>Telefone: +258 844 414 345</li>
                 <li>WhatsApp: +258 862 414 345</li>
               </ul>
