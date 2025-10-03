@@ -1,5 +1,8 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { FloatingChatButton } from "@/components/FloatingChatButton";
+import { AdminNotificationManager } from "@/components/AdminNotificationManager";
+import { ContentEditor } from "@/components/ContentEditor";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { Users, BookOpen, DollarSign, TrendingUp } from "lucide-react";
@@ -76,20 +79,9 @@ export default function AdminDashboard() {
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <Card>
-              <CardHeader>
-                <CardTitle>Atividades Recentes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">
-                    Nenhuma atividade recente
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <AdminNotificationManager />
+            
             <Card>
               <CardHeader>
                 <CardTitle>Pagamentos Pendentes</CardTitle>
@@ -103,9 +95,12 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </div>
+
+          <ContentEditor />
         </div>
       </div>
       
+      <FloatingChatButton />
       <Footer />
     </div>
   );

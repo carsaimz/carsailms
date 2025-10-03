@@ -1,5 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { FloatingChatButton } from "@/components/FloatingChatButton";
+import { ContentEditor } from "@/components/ContentEditor";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -77,22 +79,27 @@ export default function InstructorDashboard() {
             </Card>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Seus Cursos</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <p className="text-muted-foreground mb-4">
-                  Você ainda não criou nenhum curso
-                </p>
-                <Button variant="gradient">Criar Novo Curso</Button>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 gap-8 mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>Seus Cursos</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground mb-4">
+                    Você ainda não criou nenhum curso
+                  </p>
+                  <Button variant="gradient">Criar Novo Curso</Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <ContentEditor />
         </div>
       </div>
       
+      <FloatingChatButton />
       <Footer />
     </div>
   );

@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { FloatingChatButton } from "@/components/FloatingChatButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -111,6 +112,7 @@ export default function StudentDashboard() {
         </div>
       </div>
       
+      <FloatingChatButton />
       <Footer />
     </div>
   );
