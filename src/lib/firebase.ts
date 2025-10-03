@@ -4,12 +4,13 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDZn_OOjK9bufC8eCw2ejIgQBcDM1dn3x4",
+  authDomain: "carsai-lms.firebaseapp.com",
+  projectId: "carsai-lms",
+  storageBucket: "carsai-lms.firebasestorage.app",
+  messagingSenderId: "33259620207",
+  appId: "1:33259620207:web:347bc804685f29ff6e0a9a",
+  measurementId: "G-E8S6E7HYPS"
 };
 
 // Initialize Firebase
