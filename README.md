@@ -107,7 +107,7 @@ Parâmetros configuráveis:
 - ✅ Modo escuro/claro
 - ✅ Suporte multilíngue
 
-**Para mais detalhes, veja [CHANGELOG](CHANGELOG.md)
+**Para mais detalhes, veja [CHANGELOG](CHANGELOG.md)**
 
 ## 🤝 Contribuindo
 
