@@ -1,0 +1,171 @@
+{
+  "conditions": [
+    {
+      "name": "usuarios_versao_antiga",
+      "expression": "app.build < 2",
+      "tagColor": "ORANGE"
+    },
+    {
+      "name": "usuarios_moz",
+      "expression": "device.country in ['MZ']",
+      "tagColor": "GREEN"
+    },
+    {
+      "name": "idioma_portugues",
+      "expression": "device.language in ['pt']",
+      "tagColor": "PURPLE"
+    },
+    {
+      "name": "idioma_ingles",
+      "expression": "device.language in ['en']",
+      "tagColor": "PURPLE"
+    }
+  ],
+  "parameters": {
+    "maintenance_mode": {
+      "defaultValue": {
+        "value": "false"
+      },
+      "conditionalValues": {},
+      "description": "Ativar modo de manutenção"
+    },
+    "maintenance_message": {
+      "defaultValue": {
+        "value": "O sistema está em manutenção. Tente novamente em alguns minutos."
+      },
+      "conditionalValues": {
+        "idioma_ingles": {
+          "value": "The system is under maintenance. Please try again in a few minutes."
+        }
+      },
+      "description": "Mensagem exibida durante manutenção"
+    },
+    "force_update": {
+      "defaultValue": {
+        "value": "false"
+      },
+      "conditionalValues": {
+        "usuarios_versao_antiga": {
+          "value": "true"
+        }
+      },
+      "description": "Forçar atualização para versões antigas"
+    },
+    "min_version": {
+      "defaultValue": {
+        "value": "1.0.0"
+      },
+      "conditionalValues": {},
+      "description": "Versão mínima obrigatória do app"
+    },
+    "update_message": {
+      "defaultValue": {
+        "value": "Uma nova versão está disponível!"
+      },
+      "conditionalValues": {
+        "idioma_ingles": {
+          "value": "A new version is available!"
+        }
+      },
+      "description": "Mensagem de atualização disponível"
+    },
+    "update_url": {
+      "defaultValue": {
+        "value": "https://github.com/carsaimz/carsailms/releases/latest"
+      },
+      "conditionalValues": {},
+      "description": "URL para download da atualização"
+    },
+    "welcome_message": {
+      "defaultValue": {
+        "value": "Bem-vindo ao Carsai LMS!"
+      },
+      "conditionalValues": {
+        "usuarios_moz": {
+          "value": "Bem-vindo ao Carsai LMS! "
+        },
+        "idioma_ingles": {
+          "value": "Welcome to Carsai LMS!"
+        }
+      },
+      "description": "Mensagem de boas-vindas"
+    },
+    "show_promo": {
+      "defaultValue": {
+        "value": "false"
+      },
+      "conditionalValues": {},
+      "description": "Mostrar banner promocional"
+    },
+    "promo_banner": {
+      "defaultValue": {
+        "value": ""
+      },
+      "conditionalValues": {},
+      "description": "Texto do banner promocional"
+    },
+    "promo_url": {
+      "defaultValue": {
+        "value": ""
+      },
+      "conditionalValues": {},
+      "description": "URL da promoção"
+    },
+    "enable_dark_mode": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "conditionalValues": {},
+      "description": "Permitir modo escuro"
+    },
+    "enable_downloads": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "conditionalValues": {},
+      "description": "Permitir downloads de arquivos"
+    },
+    "max_file_size_mb": {
+      "defaultValue": {
+        "value": "100"
+      },
+      "conditionalValues": {},
+      "description": "Tamanho máximo de arquivo (MB)"
+    },
+    "theme_colors": {
+      "defaultValue": {
+        "value": "{\"primary\":\"#2196F3\",\"secondary\":\"#F44336\",\"accent\":\"#4CAF50\"}"
+      },
+      "conditionalValues": {},
+      "description": "Cores do tema em JSON"
+    },
+    "home_url": {
+      "defaultValue": {
+        "value": "https://carsailms.linkpc.net"
+      },
+      "conditionalValues": {},
+      "description": "URL inicial do WebView"
+    },
+    "offline_message": {
+      "defaultValue": {
+        "value": "Você está offline. Algumas funcionalidades podem estar limitadas."
+      },
+      "conditionalValues": {
+        "idioma_ingles": {
+          "value": "You are offline. Some features may be limited."
+        }
+      },
+      "description": "Mensagem quando offline"
+    }
+  },
+  "version": {
+    "versionNumber": "1",
+    "updateTime": "2026-01-25T00:00:00Z",
+    "updateUser": {
+      "email": "carsaimozambique@gmail.clm"
+    },
+    "description": "Configuração inicial",
+    "rollbackSource": "1",
+    "isRollback": false
+  }
+}
