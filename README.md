@@ -4,6 +4,7 @@
 ![Platform](https://img.shields.io/badge/platform-Android-green.svg)
 ![Min SDK](https://img.shields.io/badge/Min%20SDK-24-orange.svg)
 ![License](https://img.shields.io/badge/license-MIT-purple.svg)
+[![CodeQL Advanced](https://github.com/carsaimz/carsailms/actions/workflows/codeql.yml/badge.svg)](https://github.com/carsaimz/carsailms/actions/workflows/codeql.yml)
 
 **Carsai LMS** é um aplicativo Android nativo para acesso ao sistema de gestão de aprendizagem Carsai LMS.
 
