@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme -->
+    <color name="primary_dark">@color/primary_blue</color>
+    <color name="primary_variant_dark">#1565C0</color>
+    <color name="background_dark">#121212</color>
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="text_primary_dark">@color/white</color>
+    <color name="text_secondary_dark">#B0B0B0</color>
+</resources>

@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.carsailms",
+    "sha256_cert_fingerprints": ["2B:41:31:F0:0F:28:28:CC:F8:A1:6E:D3:07:98:A3:F3:86:02:36:B5:1D:CB:49:3C:1F:17:FE:9B:C1:0B:0A:08"],
+    "sha1_cert_fingerprints": ["6F:DA:5C:22:E0:BB:AE:8D:2D:08:FC:3B:28:70:3B:E7:40:38:31:E6"]
+  }
+}]

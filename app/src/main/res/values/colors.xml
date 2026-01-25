@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_blue">#2196F3</color>
+    <color name="primary_red">#F44336</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_light">#F5F5F5</color>
+    <color name="gray_dark">#212121</color>
+    <color name="transparent">#00000000</color>
+    
+    <!-- Light theme -->
+    <color name="primary_light">@color/primary_blue</color>
+    <color name="primary_variant_light">#1976D2</color>
+    <color name="background_light">@color/white</color>
+    <color name="surface_light">@color/white</color>
+    <color name="text_primary_light">@color/black</color>
+    <color name="text_secondary_light">#757575</color>
+</resources>

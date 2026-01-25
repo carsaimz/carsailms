@@ -1,0 +1,73 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+}
+
+android {
+    namespace 'com.carsailms'
+    compileSdk 34
+    
+    defaultConfig {
+        applicationId "com.carsailms"
+        minSdk 24
+        targetSdk 34
+        versionCode 2
+        versionName "1.0.1"
+        
+        multiDexEnabled true
+        
+        vectorDrawables { 
+            useSupportLibrary true
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("/storage/emulated/0/AndroidIDEProjects/keys/release.jks") // Define o caminho onde keys/release.jks está armazenado
+            storePassword "carsaidev"
+            keyAlias "carsaidev"
+            keyPassword "carsaidev"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+    
+    dexOptions {
+        javaMaxHeapSize "256m"
+        jumboMode = true
+        keepRuntimeAnnotatedClasses = false
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.webkit:webkit:1.9.0'
+    implementation 'androidx.preference:preference:1.2.1'
+    
+    implementation platform('com.google.firebase:firebase-bom:34.8.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-config'
+    
+    implementation 'androidx.multidex:multidex:2.0.1'
+}

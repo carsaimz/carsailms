@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>maintenance_mode</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>force_update</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>min_version</key>
+        <value>1.0.0</value>
+    </entry>
+    <entry>
+        <key>update_message</key>
+        <value>Uma nova versão está disponível!</value>
+    </entry>
+</defaultsMap>

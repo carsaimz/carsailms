@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Carsai LMS</string>
+    <string name="loading">Carregando… Aguarde, Por Favor!</string>
+    <string name="settings">Definições</string>
+    <string name="about">Sobre</string>
+    <string name="home">Início</string>
+    <string name="check_updates">Verificar Atualizações</string>
+    <string name="menu">Menu</string>
+    <string name="exit_app">Sair do App</string>
+    <string name="exit_message">Deseja sair do aplicativo?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="cancel">Cancelar</string>
+    <string name="offline_title">Sem Conexão à Internet</string>
+    <string name="offline_message">Verifique sua conexão à internet e tente novamente.</string>
+    <string name="try_again">Tentar Novamente</string>
+    <string name="close">Fechar</string>
+    <string name="back">Voltar</string>
+    <string name="forward">Avançar</string>
+    <string name="refresh">Atualizar</string>
+    <string name="theme">Tema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Escuro</string>
+    <string name="theme_system">Seguir Sistema</string>
+    <string name="language">Idioma</string>
+    <string name="language_english">English</string>
+    <string name="language_portuguese">Português</string>
+    <string name="downloading">Baixando…</string>
+    <string name="download_complete">Download concluído</string>
+    <string name="download_failed">Falha no download</string>
+    <string name="checking_updates">Verificando atualizações…</string>
+    <string name="update_available">Atualização disponível!</string>
+    <string name="update_message">Versão %s disponível. Deseja baixar?</string>
+    <string name="no_updates">Você está usando a versão mais recente</string>
+    <string name="download_update">Baixar</string>
+    <string name="later">Mais Tarde</string>
+    <string name="version">Versão</string>
+    <string name="choose_file">Escolher arquivo</string>
+    <string name="file_selected">Arquivo selecionado</string>
+    
+    <string name="about_title">Sobre Carsai LMS</string>
+    <string name="about_description">Carsai LMS é um sistema abrangente de gestão de aprendizagem projetado para fornecer acesso perfeito a conteúdos e recursos educacionais.</string>
+    <string name="about_features">Funcionalidades</string>
+    <string name="about_version_info">Informações da Versão</string>
+    <string name="about_developer">Desenvolvido pela Equipe CarsaiDev</string>
+    <string name="changelog">Registro de Alterações</string>
+</resources>

@@ -1,100 +1,150 @@
-# Carsai Mozambique LMS - Sistema de Gestão de Aprendizagem
+# 📱 Carsai LMS - Android App
 
-Sistema de aprendizagem online completo desenvolvido com React, TypeScript e Firebase.
+![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)
+![Platform](https://img.shields.io/badge/platform-Android-green.svg)
+![Min SDK](https://img.shields.io/badge/Min%20SDK-24-orange.svg)
+![License](https://img.shields.io/badge/license-MIT-purple.svg)
 
-## 🚀 Funcionalidades Implementadas
+**Carsai LMS** é um aplicativo Android nativo para acesso ao sistema de gestão de aprendizagem Carsai LMS.
 
-### ✅ Autenticação Completa
-- Login/Registro com validação
-- Gestão de sessão Firebase Auth
-- Proteção de rotas por role (Admin, Instrutor, Estudante)
-- Navbar dinâmica baseada no estado de autenticação
+## ✨ Funcionalidades
 
-### ✅ Páginas Públicas
-- **Home**: Hero section, cursos em destaque (dados reais do Firebase)
-- **Cursos**: Catálogo com dados do Firestore
-- **Blog**: Sistema de posts dinâmico do Firebase
-- **Post Detail**: Visualização completa de posts
-- **Sobre**: Missão, visão, valores
-- **Contacto**: Formulário com métodos de pagamento MZ
-- **Termos de Uso**: Documento legal completo
-- **Política de Privacidade**: GDPR compliant
+- 🔗 **Deep Linking** - Abre automaticamente ao acessar links do site
+- 📥 **Downloads Organizados** - Salva arquivos na pasta "Carsai LMS"
+- 🌐 **Links Inteligentes** - Abre links externos em apps apropriados (WhatsApp, Drive, YouTube)
+- 📤 **Upload de Arquivos** - Suporte completo para upload de imagens, vídeos e documentos
+- 🔥 **Firebase Integrado** - Analytics, Messaging e Remote Config
+- 🎨 **Modo Escuro** - Tema claro, escuro ou seguir sistema
+- 🌍 **Multilíngue** - Português e Inglês
+- 🔄 **Atualizações Automáticas** - Verificação de novas versões via GitHub
+- 📱 **Responsivo** - Suporte a orientação landscape para vídeos
+- 🚀 **Performance** - WebView otimizado com cache inteligente
 
-### ✅ Dashboards
-- **Estudante**: Progresso, cursos, certificados
-- **Instrutor**: Gestão de cursos e alunos
-- **Admin**: Visão geral da plataforma
+## 📸 Screenshots
 
-### ✅ Segurança
-- Validação com Zod (email, senhas, formulários)
-- Input sanitization
-- Firebase Authentication
-- Role-based access control
+_Em breve_
 
-## 🔧 Configuração Rápida
+## 📋 Requisitos
 
-### 1. Instalar Dependências
+- Android 7.0 (API 24) ou superior
+- Conexão à internet
+- ~10MB de espaço livre
+
+## 🚀 Download
+
+### Última Versão
+
+[![Download APK](https://img.shields.io/badge/Download-APK-brightgreen.svg)](https://github.com/carsaimz/carsailms/releases/latest)
+
+Baixe a versão mais recente na página de [Releases](https://github.com/carsaimz/carsailms/releases).
+
+## 🔧 Compilação
+
+### Pré-requisitos
+
+- JDK 17
+- Android SDK 34
+- AIDE ou Android Studio
+
+### Passos
+
+1. Clone o repositório:
 ```bash
-npm install
+git clone https://github.com/carsaimz/carsailms.git
+cd carsailms
 ```
 
-### 2. Configurar Firebase
+2. Configure Firebase:
+   - Crie projeto no [Firebase Console](https://console.firebase.google.com)
+   - Baixe `google-services.json`
+   - Coloque em `app/google-services.json`
 
-1. Crie um projeto no [Firebase Console](https://console.firebase.google.com/)
-
-2. Ative os serviços:
-   - **Authentication** → Email/Password
-   - **Firestore Database** → Modo produção
-   - **Storage** → Para uploads
-
-3. Copie as credenciais e atualize `src/lib/firebase.ts`:
-```typescript
-const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_AUTH_DOMAIN",
-  projectId: "SEU_PROJECT_ID",
-  storageBucket: "SEU_STORAGE_BUCKET",
-  messagingSenderId: "SEU_SENDER_ID",
-  appId: "SEU_APP_ID"
-};
-```
-
-### 3. Configurar Firestore (Regras de Segurança)
-
-Veja `FIREBASE_SETUP.md` para regras de segurança completas.
-
-### 4. Iniciar Projeto
+3. Define o caminho de chaves em `app/build.gradle` para apontar onde está `keys/release.jks`
+3. Compile:
 ```bash
-npm run dev
+./gradlew assembleRelease (se for release) ou assembleDebug (se for debug)
 ```
 
-## 📚 Documentação Adicional
+4. O APK estará em:
+```
+app/build/outputs/apk/release/app-release.apk
+```
 
-- **FIREBASE_SETUP.md** - Configuração detalhada Firebase
-- **INSTALACAO.md** - Guia de instalação completo
+## 🔥 Configuração Firebase
 
-## 🎨 Tecnologias
+### Analytics
+O app registra automaticamente:
+- Abertura do app
+- Cliques em menus
+- Downloads
+- Navegação entre telas
 
-- React 18 + TypeScript
-- Firebase (Auth, Firestore, Storage)
-- Tailwind CSS + shadcn/ui
-- React Router Dom
-- Zod (validação)
-- Date-fns (datas)
+### Cloud Messaging
+- Notificações push automáticas
+- Inscrição em tópicos: `general`, `updates`
 
-## 📞 Suporte
+### Remote Config
+Parâmetros configuráveis:
+- `maintenance_mode` - Modo manutenção
+- `force_update` - Forçar atualização
+- `min_version` - Versão mínima suportada
 
-- Email: suporte.carsaimz@gmail.com
-- WhatsApp: +258 862 414 345
-- Telefone: +258 844 414 345
+## 📝 Changelog
 
-## 📝 Métodos de Pagamento Suportados
+### v1.0.1 (Build 2) - 2025-01-24
+- ✅ Corrigido upload de arquivos
+- ✅ Adicionado menu de navegação inferior
+- ✅ Implementada verificação de atualizações via GitHub
+- ✅ Melhorado Firebase Analytics e Messaging
+- ✅ Corrigido deep linking com URLs específicas
+- ✅ Adicionada tela Sobre com changelog
+- ✅ Melhorada seleção de arquivos (múltiplos arquivos)
 
-- M-Pesa: 844414345 / 842846463
-- e-Mola: 862414345
-- MKesh: 835020143
-- PayPal: carsaimozambique@gmail.com
+### v1.0.0 (Build 1) - 2025-01-20
+- 🎉 Versão inicial
+- ✅ WebView integrado
+- ✅ Sistema de downloads
+- ✅ Modo escuro/claro
+- ✅ Suporte multilíngue
+
+**Para mais detalhes, veja [CHANGELOG](CHANGELOG.md)
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Por favor:
+
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/MinhaFeature`)
+3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
+4. Push para a branch (`git push origin feature/MinhaFeature`)
+5. Abra um Pull Request
+
+## 🐛 Reportar Bugs
+
+Encontrou um bug? [Abra uma issue](https://github.com/carsaimz/carsailms/issues/new) com:
+- Descrição detalhada
+- Passos para reproduzir
+- Versão do Android
+- Screenshots (se aplicável)
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja [LICENSE](LICENSE) para mais detalhes.
+
+## 👥 Equipe
+
+Desenvolvido pela **Equipe CarsaiDev**
+
+- 🌐 Website: [carsailms.linkpc.net](https://carsailms.linkpc.net)
+- 📧 Email: suporte@carsai.com
+- 📱 GitHub: [@carsaimz](https://github.com/carsaimz)
+
+## 🙏 Agradecimentos
+
+- Firebase - Plataforma backend
+- Material Design - Guidelines de design
+- Todos os contribuidores
 
 ---
 
-**Carsai Mozambique LMS v3.0** - Powered by React & Firebase
+**Feito com ❤️ pela Equipe CarsaiDev**
