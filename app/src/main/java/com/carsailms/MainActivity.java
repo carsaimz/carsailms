@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
   private WebView webView;
   private FrameLayout progressBar;
   private View offlineLayout;
+  private View bottomNavigation;
   private ImageButton btnBack, btnRefresh, btnForward, btnMenu;
   private TextView promoBannerView;
 
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
     webView = findViewById(R.id.webView);
     progressBar = findViewById(R.id.progressBar);
     offlineLayout = findViewById(R.id.offlineLayout);
+    bottomNavigation = findViewById(R.id.bottomNavigation);
     btnBack = findViewById(R.id.btnBack);
     btnRefresh = findViewById(R.id.btnRefresh);
     btnForward = findViewById(R.id.btnForward);
@@ -400,10 +402,12 @@ public class MainActivity extends AppCompatActivity {
   public void updateNavigationButtons() {
     runOnUiThread(
         () -> {
-          btnBack.setEnabled(webView.canGoBack());
-          btnForward.setEnabled(webView.canGoForward());
-          btnBack.setAlpha(webView.canGoBack() ? 1.0f : 0.5f);
-          btnForward.setAlpha(webView.canGoForward() ? 1.0f : 0.5f);
+          if (btnBack != null && btnForward != null) {
+            btnBack.setEnabled(webView.canGoBack());
+            btnForward.setEnabled(webView.canGoForward());
+            btnBack.setAlpha(webView.canGoBack() ? 1.0f : 0.5f);
+            btnForward.setAlpha(webView.canGoForward() ? 1.0f : 0.5f);
+          }
         });
   }
 
@@ -620,14 +624,18 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onResume() {
     super.onResume();
-    webView.onResume();
+    if (webView != null) {
+      webView.onResume();
+    }
     firebaseAnalytics.logEvent("app_resumed", null);
   }
 
   @Override
   protected void onPause() {
     super.onPause();
-    webView.onPause();
+    if (webView != null) {
+      webView.onPause();
+    }
     firebaseAnalytics.logEvent("app_paused", null);
   }
 
