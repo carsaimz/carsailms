@@ -23,7 +23,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("/storage/emulated/0/AndroidIDEProjects/keys/release.jks") // Define o caminho onde keys/release.jks está armazenado
+            storeFile file("/release.jks") // Define o caminho onde keys/release.jks está armazenado
             storePassword "carsaidev"
             keyAlias "carsaidev"
             keyPassword "carsaidev"
