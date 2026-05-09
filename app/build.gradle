@@ -21,25 +21,17 @@ android {
         }
     }
 
-    // --- Assinatura ---
     signingConfigs {
-        // Debug: usa a keystore padrão do Android (nunca sobe no repositório)
         debug {
             storeFile file(System.getProperty("user.home") + "/.android/debug.keystore")
             storePassword "android"
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
-
-        // Release: configurada dinamicamente abaixo
-        release {
-            // será preenchida via variáveis de ambiente ou fallback
-        }
     }
 
     buildTypes {
         release {
-            // A configuração de assinatura é definida no bloco dinâmico
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -49,23 +41,22 @@ android {
     }
 
     // --- Configuração dinâmica da assinatura de release ---
-    // Se as variáveis de ambiente (secrets) existirem → usa keystore real.
-    // Caso contrário → usa a keystore de debug (para builds locais sem segredos).
     def keystorePassword = System.getenv("KEYSTORE_PASSWORD")
     def keyAlias          = System.getenv("KEY_ALIAS")
     def keyPassword       = System.getenv("KEY_PASSWORD")
     def keystoreFile      = System.getenv("KEYSTORE_FILE") ?: "release.jks"
 
     if (keystorePassword != null && keyAlias != null && keyPassword != null) {
-        android.signingConfigs.release {
-            storeFile file(keystoreFile)
-            storePassword keystorePassword
-            keyAlias keyAlias
-            keyPassword keyPassword
+        android.signingConfigs {
+            release {
+                storeFile file(keystoreFile)
+                storePassword keystorePassword
+                keyAlias keyAlias
+                keyPassword keyPassword
+            }
         }
         android.buildTypes.release.signingConfig = android.signingConfigs.release
     } else {
-        // Fallback para builds locais: assina com debug
         android.buildTypes.release.signingConfig = android.signingConfigs.debug
     }
 
