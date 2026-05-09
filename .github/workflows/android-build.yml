@@ -30,20 +30,19 @@ jobs:
         run: chmod +x gradlew
 
       # Decodifica a keystore caso o secret exista (só em repositório privado)
-      - name: Decodificar keystore
-        if: env.KEYSTORE_BASE64 != ''
-        run: echo "$KEYSTORE_BASE64" | base64 -d > app/release.jks
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+     - name: Decodificar keystore
+  if: env.KEYSTORE_BASE64 != ''
+  run: echo "$KEYSTORE_BASE64" | base64 -d > release.jks
+  env:
+    KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
 
-      - name: Build Release APK
-        run: ./gradlew assembleRelease
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          KEYSTORE_FILE: app/release.jks
-
+- name: Build Release APK
+  run: ./gradlew assembleRelease
+  env:
+    KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+    KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+    KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+    KEYSTORE_FILE: release.jks
       # Extrai versão e código do build.gradle
       - name: Extrair versionName e versionCode
         id: version
