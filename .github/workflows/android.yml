@@ -26,6 +26,7 @@ jobs:
       # 🔑 Gera keystore de debug (necessária no CI)
       - name: Gerar keystore de debug
         run: |
+          mkdir -p ~/.android
           keytool -genkey -v \
             -keystore ~/.android/debug.keystore \
             -storepass android \
