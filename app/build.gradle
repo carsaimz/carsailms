@@ -28,36 +28,24 @@ android {
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
+        release {
+            storeFile file(System.getenv("KEYSTORE_FILE") ?: "release.jks")
+            storePassword System.getenv("KEYSTORE_PASSWORD") ?: "carsaidev"
+            keyAlias System.getenv("KEY_ALIAS") ?: "carsaidev"
+            keyPassword System.getenv("KEY_PASSWORD") ?: "carsaidev"
+        }
     }
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            signingConfig signingConfigs.debug
             minifyEnabled false
         }
-    }
-
-    // --- Configuração dinâmica da assinatura de release ---
-    def keystorePassword = System.getenv("KEYSTORE_PASSWORD")
-    def keyAlias          = System.getenv("KEY_ALIAS")
-    def keyPassword       = System.getenv("KEY_PASSWORD")
-    def keystoreFile      = System.getenv("KEYSTORE_FILE") ?: "release.jks"
-
-    if (keystorePassword != null && keyAlias != null && keyPassword != null) {
-        android.signingConfigs {
-            release {
-                storeFile file(keystoreFile)
-                storePassword keystorePassword
-                keyAlias keyAlias
-                keyPassword keyPassword
-            }
-        }
-        android.buildTypes.release.signingConfig = android.signingConfigs.release
-    } else {
-        android.buildTypes.release.signingConfig = android.signingConfigs.debug
     }
 
     compileOptions {
