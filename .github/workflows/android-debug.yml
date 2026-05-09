@@ -1,0 +1,94 @@
+name: Build e Publicar Debug (Pre-release)
+
+on:
+  push:
+    branches: [ main, master ]
+    paths-ignore:
+      - '**.md'
+      - '.github/**'
+      - '!.github/workflows/android-debug.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Dar permissão ao gradlew
+        run: chmod +x gradlew
+
+      - name: Gerar keystore de debug
+        run: |
+          mkdir -p ~/.android
+          keytool -genkey -v \
+            -keystore ~/.android/debug.keystore \
+            -storepass android \
+            -alias androiddebugkey \
+            -keypass android \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US"
+
+      - name: Extrair versão
+        id: version
+        run: |
+          VNAME=$(grep 'versionName' app/build.gradle | head -1 | awk -F '"' '{print $2}')
+          VCODE=$(grep 'versionCode' app/build.gradle | head -1 | grep -oE '[0-9]+')
+          echo "versionName=$VNAME" >> $GITHUB_OUTPUT
+          echo "versionCode=$VCODE" >> $GITHUB_OUTPUT
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Gerar changelog
+        id: changelog
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "sha=$SHORT_SHA" >> $GITHUB_OUTPUT
+          LOG=$(git log -5 --pretty=format:"- %s" --no-merges)
+          LOG="${LOG//'%'/'%25'}"
+          LOG="${LOG//$'\n'/'%0A'}"
+          LOG="${LOG//$'\r'/'%0D'}"
+          echo "log=$LOG" >> $GITHUB_OUTPUT
+
+      - name: Criar Pre-release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: debug-${{ steps.version.outputs.versionName }}-${{ steps.changelog.outputs.sha }}
+          name: "🔧 Debug v${{ steps.version.outputs.versionName }} (Build ${{ steps.version.outputs.versionCode }})"
+          body: |
+            ## 🔧 Debug Build
+
+            **Versão:** ${{ steps.version.outputs.versionName }}
+            **Build:** ${{ steps.version.outputs.versionCode }}
+            **Commit:** ${{ steps.changelog.outputs.sha }}
+
+            ### 📝 Últimos commits:
+            ${{ steps.changelog.outputs.log }}
+
+            ---
+            ⚠️ **Este é um build de debug.** Não é assinado com a chave de produção.
+
+            <div align="center">
+            <a href="https://github.com/${{ github.repository }}/releases/download/debug-${{ steps.version.outputs.versionName }}-${{ steps.changelog.outputs.sha }}/app-debug.apk"><img src="https://img.shields.io/badge/BAIXAR-APK_DEBUG-orange.svg" alt="Baixar APK Debug" width="200"></a>
+            </div>
+          files: app/build/outputs/apk/debug/*.apk
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
