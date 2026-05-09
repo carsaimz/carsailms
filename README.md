@@ -1,6 +1,6 @@
 # 📱 Carsai LMS - Android App
 
-![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.2-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Android-green.svg)
 ![Min SDK](https://img.shields.io/badge/Min%20SDK-24-orange.svg)
 ![License](https://img.shields.io/badge/license-MIT-purple.svg)
