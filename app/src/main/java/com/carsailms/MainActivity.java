@@ -363,42 +363,74 @@ public class MainActivity extends AppCompatActivity {
   private void checkForUpdates() {
     Toast.makeText(this, R.string.checking_updates, Toast.LENGTH_SHORT).show();
 
-    UpdateChecker.checkForUpdates(
-        this,
-        new UpdateChecker.UpdateListener() {
-          @Override
-          public void onUpdateAvailable(String latestVersion, String downloadUrl) {
-            new AlertDialog.Builder(MainActivity.this)
-                .setTitle(R.string.update_available)
-                .setMessage(getString(R.string.update_message, latestVersion))
-                .setPositiveButton(
-                    R.string.download_update,
-                    (dialog, which) -> {
-                      Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
-                      startActivity(browserIntent);
-
+   UpdateChecker.checkForUpdates(
+    this,
+    new UpdateChecker.UpdateListener() {
+      @Override
+      public void onUpdateAvailable(String latestVersion, String downloadUrl) {
+        new AlertDialog.Builder(MainActivity.this)
+            .setTitle(R.string.update_available)
+            .setMessage(getString(R.string.update_message, latestVersion))
+            .setPositiveButton(
+                R.string.download_update,
+                (dialog, which) -> {
+                  // ✅ Verificar se a URL é válida
+                  if (downloadUrl == null || downloadUrl.isEmpty()) {
+                    downloadUrl = "https://github.com/carsaimz/carsailms/releases/latest";
+                  }
+                  
+                  // ✅ Criar intent com FLAG_ACTIVITY_NEW_TASK
+                  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
+                  browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                  
+                  try {
+                    startActivity(browserIntent);
+                    
+                    // ✅ Log analytics só se abrir com sucesso
+                    Bundle bundle = new Bundle();
+                    bundle.putString("version", latestVersion);
+                    firebaseAnalytics.logEvent("update_download_clicked", bundle);
+                    
+                  } catch (android.content.ActivityNotFoundException e) {
+                    // Fallback: tentar URL principal do GitHub
+                    try {
+                      Intent fallbackIntent = new Intent(Intent.ACTION_VIEW, 
+                          Uri.parse("https://github.com/carsaimz/carsailms/releases/latest"));
+                      fallbackIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                      startActivity(fallbackIntent);
+                      
                       Bundle bundle = new Bundle();
                       bundle.putString("version", latestVersion);
+                      bundle.putString("fallback", "true");
                       firebaseAnalytics.logEvent("update_download_clicked", bundle);
-                    })
-                .setNegativeButton(R.string.later, null)
-                .show();
-          }
+                      
+                    } catch (Exception ex) {
+                      Toast.makeText(MainActivity.this, 
+                          "Nenhum navegador encontrado", 
+                          Toast.LENGTH_SHORT).show();
+                    }
+                  } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, 
+                        "Erro ao abrir navegador: " + e.getMessage(), 
+                        Toast.LENGTH_SHORT).show();
+                  }
+                })
+            .setNegativeButton(R.string.later, null)
+            .show();
+      }
 
-          @Override
-          public void onNoUpdate() {
-            Toast.makeText(MainActivity.this, R.string.no_updates, Toast.LENGTH_SHORT).show();
-            firebaseAnalytics.logEvent("update_check_no_update", null);
-          }
+      @Override
+      public void onNoUpdate() {
+        Toast.makeText(MainActivity.this, R.string.no_updates, Toast.LENGTH_SHORT).show();
+        firebaseAnalytics.logEvent("update_check_no_update", null);
+      }
 
-          @Override
-          public void onError(String error) {
-            Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
-            firebaseAnalytics.logEvent("update_check_error", null);
-          }
-        });
-  }
-
+      @Override
+      public void onError(String error) {
+        Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+        firebaseAnalytics.logEvent("update_check_error", null);
+      }
+    });
   public void updateNavigationButtons() {
     runOnUiThread(
         () -> {
