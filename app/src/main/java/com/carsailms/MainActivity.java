@@ -414,14 +414,14 @@ public class MainActivity extends AppCompatActivity {
     handleDeepLink(intent);
   }
 
-  // ✅ MÉTODO CORRIGIDO - findViewById com ID correto
+  // ✅ MÉTODO CORRIGIDO - findViewById com string ao invés de id
   private void showOfflineScreen() {
     offlineLayout.setVisibility(View.VISIBLE);
 
     String offlineMessage = configManager.getString("offline_message");
     if (!offlineMessage.isEmpty()) {
-      // ✅ CORRIGIDO: Usar R.id em vez de R.string
-      TextView offlineMsgView = offlineLayout.findViewById(R.id.offline_message);
+      // ✅ CORRIGIDO: Usar R.string em vez de R.id
+      TextView offlineMsgView = offlineLayout.findViewById(R.string.offline_message);
       if (offlineMsgView != null) {
         offlineMsgView.setText(offlineMessage);
       }
