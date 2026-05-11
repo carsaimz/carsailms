@@ -71,7 +71,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: debug-${{ steps.version.outputs.versionName }}-${{ steps.changelog.outputs.sha }}
-          name: "🔧 Debug v${{ steps.version.outputs.versionName }} (Build ${{ steps.version.outputs.versionCode }})"
+          name: "🔧 Debug v${{ steps.version.outputs.versionName }}"
           body: |
             ## 🔧 Debug Build
 
