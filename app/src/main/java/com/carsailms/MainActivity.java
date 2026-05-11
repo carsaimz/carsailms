@@ -32,7 +32,9 @@ import com.carsailms.utils.NetworkUtils;
 import com.carsailms.utils.PreferenceManager;
 import com.carsailms.utils.RemoteConfigManager;
 import com.carsailms.utils.UpdateChecker;
+import com.carsailms.utils.UpdateDownloader;
 import com.carsailms.utils.WebViewClientCustom;
+import com.carsailms.utils.DownloadUtils;
 import com.carsailms.widgets.CustomWebChromeClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -98,11 +100,9 @@ public class MainActivity extends AppCompatActivity {
               if (task.isSuccessful() && task.getResult() != null) {
                 String token = task.getResult();
                 Log.d(TAG, "FCM Token: " + token);
-                // Enviar para servidor se necessário
               }
             });
 
-    // Subscribe to topics
     FirebaseMessaging.getInstance()
         .subscribeToTopic("general")
         .addOnCompleteListener(
@@ -129,9 +129,6 @@ public class MainActivity extends AppCompatActivity {
     btnRefresh = findViewById(R.id.btnRefresh);
     btnForward = findViewById(R.id.btnForward);
     btnMenu = findViewById(R.id.btnMenu);
-
-    // Banner promocional (opcional, adicionar no layout se quiser)
-    // promoBannerView = findViewById(R.id.promoBanner);
   }
 
   private void setupWebView() {
@@ -162,16 +159,13 @@ public class MainActivity extends AppCompatActivity {
 
     webView.setDownloadListener(
         (url, userAgent, contentDisposition, mimeType, contentLength) -> {
-          // Verificar se downloads estão habilitados via Remote Config
           if (!configManager.areDownloadsEnabled()) {
-            Toast.makeText(this, "Downloads desabilitados temporariamente", Toast.LENGTH_SHORT)
-                .show();
+            Toast.makeText(this, "Downloads desabilitados temporariamente", Toast.LENGTH_SHORT).show();
             return;
           }
 
           if (checkStoragePermission()) {
-            com.carsailms.utils.DownloadUtils.downloadFile(
-                MainActivity.this, url, contentDisposition, mimeType);
+            DownloadUtils.downloadFile(MainActivity.this, url, contentDisposition, mimeType);
           } else {
             requestStoragePermission();
           }
@@ -237,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
     popup.show();
   }
 
-  /** Buscar Remote Config e aplicar configurações */
   private void fetchRemoteConfigAndLoad() {
     configManager.fetchConfig(
         new RemoteConfigManager.ConfigListener() {
@@ -250,15 +243,13 @@ public class MainActivity extends AppCompatActivity {
           @Override
           public void onConfigError(Exception error) {
             Log.e(TAG, "Erro ao buscar Remote Config", error);
-            // Usar valores padrão e continuar
             applyRemoteConfig();
           }
         });
   }
 
-  /** Aplicar todas as configurações do Remote Config */
   private void applyRemoteConfig() {
-    // 1. VERIFICAR MODO MANUTENÇÃO (prioridade máxima)
+    // 1. VERIFICAR MODO MANUTENÇÃO
     if (configManager.isMaintenanceMode()) {
       configManager.showMaintenanceDialog(this, this::finish);
       firebaseAnalytics.logEvent("maintenance_mode_active", null);
@@ -291,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
       configManager.logAllValues();
     }
 
-    // 8. ANALYTICS - Registrar configurações aplicadas
+    // 8. ANALYTICS
     Bundle configBundle = new Bundle();
     configBundle.putBoolean("dark_mode_enabled", configManager.isDarkModeEnabled());
     configBundle.putBoolean("downloads_enabled", configManager.areDownloadsEnabled());
@@ -299,39 +290,23 @@ public class MainActivity extends AppCompatActivity {
     firebaseAnalytics.logEvent("remote_config_applied", configBundle);
   }
 
-  /** Aplicar cores do tema via Remote Config */
   private void applyThemeColors() {
     try {
       RemoteConfigManager.ThemeColors colors = configManager.getThemeColors();
-
-      // Aplicar cores nos elementos da UI
       int primaryColor = Color.parseColor(colors.primary);
-      int accentColor = Color.parseColor(colors.accent);
 
-      // Exemplo: aplicar cor na barra de status
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         getWindow().setStatusBarColor(primaryColor);
       }
 
-      // Aplicar em outros elementos conforme necessário
-      // toolbar.setBackgroundColor(primaryColor);
-      // fab.setBackgroundColor(accentColor);
-
-      Log.d(
-          TAG,
-          "Tema aplicado - Primary: "
-              + colors.primary
-              + ", Secondary: "
-              + colors.secondary
-              + ", Accent: "
-              + colors.accent);
-
+      Log.d(TAG, "Tema aplicado - Primary: " + colors.primary + 
+                   ", Secondary: " + colors.secondary + 
+                   ", Accent: " + colors.accent);
     } catch (Exception e) {
       Log.e(TAG, "Erro ao aplicar cores do tema", e);
     }
   }
 
-  /** Mostrar banner promocional */
   private void showPromoBanner() {
     String bannerText = configManager.getPromoBanner();
     String promoUrl = configManager.getPromoUrl();
@@ -340,97 +315,52 @@ public class MainActivity extends AppCompatActivity {
       return;
     }
 
-    // Se você tiver um TextView para banner no layout, use assim:
-    /*
-    if (promoBannerView != null) {
-        promoBannerView.setText(bannerText);
-        promoBannerView.setVisibility(View.VISIBLE);
-        promoBannerView.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(promoUrl));
-            startActivity(intent);
-            firebaseAnalytics.logEvent("promo_banner_clicked", null);
-        });
-    }
-    */
-
-    // Ou mostrar como Toast/Snackbar
     Toast.makeText(this, bannerText, Toast.LENGTH_LONG).show();
-
     Log.d(TAG, "Banner promocional: " + bannerText);
     firebaseAnalytics.logEvent("promo_banner_shown", null);
   }
 
+  // ✅ MÉTODO CORRIGIDO - Não crasha mais
   private void checkForUpdates() {
     Toast.makeText(this, R.string.checking_updates, Toast.LENGTH_SHORT).show();
 
-   UpdateChecker.checkForUpdates(
-    this,
-    new UpdateChecker.UpdateListener() {
-      @Override
-      public void onUpdateAvailable(String latestVersion, String downloadUrl) {
-        new AlertDialog.Builder(MainActivity.this)
-            .setTitle(R.string.update_available)
-            .setMessage(getString(R.string.update_message, latestVersion))
-            .setPositiveButton(
-                R.string.download_update,
-                (dialog, which) -> {
-                  // ✅ Verificar se a URL é válida
-                  if (downloadUrl == null || downloadUrl.isEmpty()) {
-                    downloadUrl = "https://github.com/carsaimz/carsailms/releases/latest";
-                  }
-                  
-                  // ✅ Criar intent com FLAG_ACTIVITY_NEW_TASK
-                  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
-                  browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                  
-                  try {
-                    startActivity(browserIntent);
-                    
-                    // ✅ Log analytics só se abrir com sucesso
-                    Bundle bundle = new Bundle();
-                    bundle.putString("version", latestVersion);
-                    firebaseAnalytics.logEvent("update_download_clicked", bundle);
-                    
-                  } catch (android.content.ActivityNotFoundException e) {
-                    // Fallback: tentar URL principal do GitHub
-                    try {
-                      Intent fallbackIntent = new Intent(Intent.ACTION_VIEW, 
-                          Uri.parse("https://github.com/carsaimz/carsailms/releases/latest"));
-                      fallbackIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                      startActivity(fallbackIntent);
-                      
+    UpdateChecker.checkForUpdates(
+        this,
+        new UpdateChecker.UpdateListener() {
+          @Override
+          public void onUpdateAvailable(String latestVersion, String downloadUrl) {
+            new AlertDialog.Builder(MainActivity.this)
+                .setTitle(R.string.update_available)
+                .setMessage(getString(R.string.update_message, latestVersion))
+                .setPositiveButton(
+                    R.string.download_update,
+                    (dialog, which) -> {
+                      // ✅ Usa UpdateDownloader em vez de chamar diretamente
+                      UpdateDownloader.openInBrowser(MainActivity.this, downloadUrl);
+
                       Bundle bundle = new Bundle();
                       bundle.putString("version", latestVersion);
-                      bundle.putString("fallback", "true");
+                      bundle.putString("url", downloadUrl != null ? downloadUrl : "fallback");
                       firebaseAnalytics.logEvent("update_download_clicked", bundle);
-                      
-                    } catch (Exception ex) {
-                      Toast.makeText(MainActivity.this, 
-                          "Nenhum navegador encontrado", 
-                          Toast.LENGTH_SHORT).show();
-                    }
-                  } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, 
-                        "Erro ao abrir navegador: " + e.getMessage(), 
-                        Toast.LENGTH_SHORT).show();
-                  }
-                })
-            .setNegativeButton(R.string.later, null)
-            .show();
-      }
+                    })
+                .setNegativeButton(R.string.later, null)
+                .show();
+          }
 
-      @Override
-      public void onNoUpdate() {
-        Toast.makeText(MainActivity.this, R.string.no_updates, Toast.LENGTH_SHORT).show();
-        firebaseAnalytics.logEvent("update_check_no_update", null);
-      }
+          @Override
+          public void onNoUpdate() {
+            Toast.makeText(MainActivity.this, R.string.no_updates, Toast.LENGTH_SHORT).show();
+            firebaseAnalytics.logEvent("update_check_no_update", null);
+          }
 
-      @Override
-      public void onError(String error) {
-        Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
-        firebaseAnalytics.logEvent("update_check_error", null);
-      }
-    });
+          @Override
+          public void onError(String error) {
+            Toast.makeText(MainActivity.this, error, Toast.LENGTH_LONG).show();
+            firebaseAnalytics.logEvent("update_check_error", null);
+          }
+        });
+  }
+
   public void updateNavigationButtons() {
     runOnUiThread(
         () -> {
@@ -484,13 +414,14 @@ public class MainActivity extends AppCompatActivity {
     handleDeepLink(intent);
   }
 
+  // ✅ MÉTODO CORRIGIDO - findViewById com ID correto
   private void showOfflineScreen() {
     offlineLayout.setVisibility(View.VISIBLE);
 
-    // Usar mensagem do Remote Config se disponível
     String offlineMessage = configManager.getString("offline_message");
     if (!offlineMessage.isEmpty()) {
-      TextView offlineMsgView = offlineLayout.findViewById(R.string.offline_message);
+      // ✅ CORRIGIDO: Usar R.id em vez de R.string
+      TextView offlineMsgView = offlineLayout.findViewById(R.id.offline_message);
       if (offlineMsgView != null) {
         offlineMsgView.setText(offlineMessage);
       }
@@ -514,7 +445,6 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void registerLaunchers() {
-    // File chooser launcher
     fileChooserLauncher =
         registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -526,7 +456,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent data = result.getData();
                 if (data != null) {
                   if (data.getClipData() != null) {
-                    // Multiple files
                     int count = data.getClipData().getItemCount();
                     results = new Uri[count];
                     for (int i = 0; i < count; i++) {
@@ -537,7 +466,6 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putInt("file_count", count);
                     firebaseAnalytics.logEvent("files_selected_multiple", bundle);
                   } else if (data.getData() != null) {
-                    // Single file
                     results = new Uri[] {data.getData()};
                     firebaseAnalytics.logEvent("file_selected_single", null);
                   }
@@ -547,7 +475,6 @@ public class MainActivity extends AppCompatActivity {
               filePathCallback = null;
             });
 
-    // Permission launcher
     permissionLauncher =
         registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(),
