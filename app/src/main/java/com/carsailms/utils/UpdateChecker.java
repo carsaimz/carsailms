@@ -39,7 +39,6 @@ public class UpdateChecker {
                 connection.setReadTimeout(10000);
                 connection.setRequestProperty("Accept", "application/json");
 
-                // Verificar se a resposta é válida
                 int responseCode = connection.getResponseCode();
                 if (responseCode != HttpURLConnection.HTTP_OK) {
                     handler.post(() -> listener.onError("Erro de conexão: " + responseCode));
@@ -61,9 +60,8 @@ public class UpdateChecker {
 
                 JSONObject json = new JSONObject(response.toString());
                 String latestVersion = json.getString("tag_name").replace("v", "");
-                String downloadUrl = FALLBACK_URL; // URL padrão
+                String downloadUrl = FALLBACK_URL;
 
-                // Tentar obter o URL direto do asset
                 if (json.has("assets")) {
                     JSONArray assets = json.getJSONArray("assets");
                     if (assets.length() > 0) {
@@ -75,7 +73,6 @@ public class UpdateChecker {
                     }
                 }
 
-                // Se não encontrou asset, usa o html_url do release
                 if (downloadUrl.equals(FALLBACK_URL) && json.has("html_url")) {
                     downloadUrl = json.getString("html_url");
                 }
@@ -120,7 +117,6 @@ public class UpdateChecker {
             }
             return 0;
         } catch (NumberFormatException e) {
-            // Se houver erro na comparação, assume que são iguais
             return 0;
         }
     }
