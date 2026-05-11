@@ -101,7 +101,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          name: "🚀 v${{ steps.version.outputs.versionName }} (Build ${{ steps.version.outputs.versionCode }})"
+          name: "🚀 v${{ steps.version.outputs.versionName }}"
           body: |
             ### v${{ steps.version.outputs.versionName }} (Build ${{ steps.version.outputs.versionCode }})
             ${{ steps.changelog.outputs.log }}
