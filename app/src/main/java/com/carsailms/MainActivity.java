@@ -43,7 +43,7 @@ import com.carsailms.R;
 public class MainActivity extends AppCompatActivity {
 
   private static final String TAG = "MainActivity";
-  private static final String BASE_URL = "https://carsailm.free.nf";
+  private static final String BASE_URL = "https://carsailms.free.nf";
 
   private WebView webView;
   private FrameLayout progressBar;
